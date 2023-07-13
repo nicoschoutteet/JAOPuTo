@@ -22,16 +22,14 @@ JAOPuTo_domainvisualization_positions <- function(DateTime,
                                                   Reference = "MCP",
                                                   ReturnDataframes = FALSE) {
 
+  # overview Core bidding zones
+  CoreBZ <- data.frame(BiddingZoneAbb = c("AT", "BE", "HR", "CZ", "DE", "FR", "HU", "NL", "PL", "RO", "SK", "SI", "ALBE", "ALDE"),
+                       BiddingZone = c("Austria", "Belgium", "Croatia", "Czech Republic", "Germany/Luxembourg", "France", "Hungary",
+                                       "Netherlands", "Poland", "Romania", "Slovakia", "Slovenia", "ALEGrO Belgium", "ALEGrO Germany"))
+
   # bidding zone abbreviations
   BiddingZoneAbb1 = CoreBZ$BiddingZoneAbb[CoreBZ$BiddingZone == BiddingZone1]
   BiddingZoneAbb2 = CoreBZ$BiddingZoneAbb[CoreBZ$BiddingZone == BiddingZone2]
-
-
-  # overview Core bidding zones
-  CoreBZ = data.frame(BiddingZoneAbb = c("AT", "BE", "HR", "CZ", "DE", "FR", "HU", "NL", "PL", "RO", "SK", "SI", "ALBE", "ALDE"),
-                      BiddingZone = c("Austria", "Belgium", "Croatia", "Czech Republic", "Germany/Luxembourg", "France", "Hungary",
-                                      "Netherlands", "Poland", "Romania", "Slovakia", "Slovenia", "ALEGrO Belgium", "ALEGrO Germany"))
-
 
   # define reference positions for zones (where to slice)
   if (Reference == "MCP") {

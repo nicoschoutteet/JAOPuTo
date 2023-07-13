@@ -16,6 +16,9 @@ Imports:
     stringr,
     tibble,
     tidyselect,
+    CREG,
+    sf,
+    ggplot2
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

@@ -18,6 +18,6 @@ The JAOPuTo package contains functions to download the following datasets:
 
 Additionally, a function to visualize the flow-based domain, returning a ggplot2 object and the corresponding dataframes, is included:
 
-```{r include = FALSE}
+```{r, echo=FALSE}
 JAOPuTo_domainvisualizations(as.POSIXct("2022-06-09 00:00", "CET"), "Belgium", "France", "MCP", TRUE)
 ```

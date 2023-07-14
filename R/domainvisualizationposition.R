@@ -5,6 +5,7 @@
 #' @param BiddingZone2 character class variable determining the second Core bidding zone for which to visualize the possible net positions (vertically)
 #' @param Reference character-class variable (default: "MCP", alternative: "Zero-balanced") determining which Core net positions to assume for the cross-section of the flow-based domain
 #' @param ReturnDataframes boolean variable (default: FALSE) determining whether to return the dataframes
+#' @param Interactive boolean variable (default: FALSE) determining whether the output is an interactive ggplot / ggiraph object (if TRUE) or a static ggplot object (if FALSE)
 #'
 #' @return a ggplot2 object and, if ReturnDataframes == TRUE, the dataframes to build the flow-based domain
 #' @export
@@ -20,7 +21,8 @@ JAOPuTo_domainvisualization_positions <- function(DateTime,
                                                   BiddingZone1,
                                                   BiddingZone2,
                                                   Reference = "MCP",
-                                                  ReturnDataframes = FALSE) {
+                                                  ReturnDataframes = FALSE,
+                                                  Interactive = FALSE) {
 
   # overview Core bidding zones
   CoreBZ <- data.frame(BiddingZoneAbb = c("AT", "BE", "HR", "CZ", "DE", "FR", "HU", "NL", "PL", "RO", "SK", "SI", "ALBE", "ALDE"),
@@ -66,7 +68,7 @@ JAOPuTo_domainvisualization_positions <- function(DateTime,
            / df_finaldomain[[paste0("ptdf_", BiddingZoneAbb2)]],
            Slope = - df_finaldomain[[paste0("ptdf_", BiddingZoneAbb1)]] /
              df_finaldomain[[paste0("ptdf_", BiddingZoneAbb2)]]) %>%
-    mutate(CNEC = paste0(TSO, ": ", cneName, " | ", contName, " - ", direction),
+    mutate(CNEC = paste0(cneName, " | ", contName, " - ", direction),
            Type = "Presolved",
            Location = ifelse(hubFrom == hubTo, "Internal", "Cross-border"),
            RAM = ram / fmax) %>%
@@ -103,7 +105,7 @@ JAOPuTo_domainvisualization_positions <- function(DateTime,
              / df_activeconstraints[[paste0("hub_", BiddingZoneAbb2)]],
              Slope = - df_activeconstraints[[paste0("hub_", BiddingZoneAbb1)]] /
                df_activeconstraints[[paste0("hub_", BiddingZoneAbb2)]]) %>%
-      mutate(CNEC = paste0(TSO, ": ", cnecName, " | ", contName, " - ", direction),
+      mutate(CNEC = paste0(cnecName, " | ", contName, " - ", direction),
              Type = "Active",
              Location = ifelse(hubFrom == hubTo, "Internal", "Cross-border"),
              RAM = ram / fmax) %>%
@@ -220,55 +222,121 @@ JAOPuTo_domainvisualization_positions <- function(DateTime,
   }
 
 
-  # visualize everything
-  ggplot2::ggplot() +
-    ggplot2::geom_hline(yintercept = 0, linewidth = .25) +
-    ggplot2::geom_vline(xintercept = 0, linewidth = .25) +
-    ggplot2::geom_sf(data = df_domainpolygons,
-                     mapping = aes(fill = Type),
-                     alpha = .2, colour = NA) +
-    ggplot2::geom_abline(data = df_domain,
-                         mapping = ggplot2::aes(intercept = Intercept, slope = Slope, group = CNEC, colour = Type, linewidth = Type)) +
-    ggplot2::geom_point(data = df_netpositions,
-                        mapping = ggplot2::aes(x = NetPosition[BiddingZone == BiddingZone1],
-                                               y = NetPosition[BiddingZone == BiddingZone2]),
-                        shape = 21, size = 3, fill = CREG::CREG_blue2, colour = "white") +
-    ggplot2::scale_x_continuous(name = paste0("\n←      Net position      →\n", BiddingZone1),
-                                labels = scales::number_format(big.mark = ".",
-                                                               decimal.mark = ",",
-                                                               suffix = " MW"),
-                                breaks = seq(-10000, 10000, 2500)) +
-    ggplot2::scale_y_continuous(name = paste0("↑\n\nNet position\n", BiddingZone2, "\n\n↓"),
-                                labels = scales::number_format(big.mark = ".",
-                                                               decimal.mark = ",",
-                                                               suffix = " MW"),
-                                breaks = seq(-10000, 10000, 2500)) +
-    ggplot2::scale_colour_manual(name = "Type of network element:",
-                                 values = c("Active" = CREG::CREG_red,
-                                            "Presolved" = CREG::CREG_grey1)) +
-    ggplot2::scale_linewidth_manual(name = "Type of network element:",
-                                    values = c("Active" = .5,
-                                               "Presolved" = .25)) +
-    ggplot2::scale_fill_manual(name = "Domain:",
-                               values = c("LTA" = CREG::CREG_orange,
-                                          "FB" = CREG::CREG_blue2)) +
-    ggplot2::coord_sf(xlim = c(-10000, 10000),
-                      ylim = c(-10000, 10000),
-                      expand = FALSE) +
-    ggplot2::labs(title = "Core day-ahead flow-based market coupling capacity domain and market clearing point",
-                  subtitle = paste0("Presolved domain, active constraints and market clearing point for ", BiddingZone1, " (horizontally) and ", BiddingZone2, " (vertically)\non ",
-                                    format(DateTime, "%d %B %Y"), " from ", format(DateTime, "%H:%M"), " to ", format(DateTime + lubridate::hours(1), "%H:%M"), " (", tz(DateTime), "), with reference = ", Reference),
-                  caption = "Source: calculations CREG based on data Core TSOs via JAO Publication Tool") +
-    CREG::theme_CREG() +
-    ggplot2::theme(axis.line = element_blank(),
-                   axis.ticks = element_line(linewidth = .25, colour = CREG::CREG_grey1),
-                   axis.title.y = ggplot2::element_text(angle = 0, vjust = .5),
-                   axis.text = ggplot2::element_text(size = rel(.6)),
-                   legend.position = "bottom",
-                   legend.key.size = ggplot2::unit(.25, "cm"),
-                   legend.title = ggplot2::element_text(size = ggplot2::rel(.6)),
-                   legend.text = ggplot2::element_text(size =ggplot2::rel(.6)),
-                   panel.grid.major = element_line(linewidth = .1, linetype = "dotted", colour = CREG::CREG_grey1),
-                   plot.margin = margin(0.1, 1, 0.1, 0.1, "cm"))
+  if (Interactive == FALSE) {
+    # visualize everything static
+    ggplot2::ggplot() +
+      ggplot2::geom_hline(yintercept = 0, linewidth = .25) +
+      ggplot2::geom_vline(xintercept = 0, linewidth = .25) +
+      ggplot2::geom_sf(data = df_domainpolygons,
+                       mapping = aes(fill = Type),
+                       alpha = .2, colour = NA) +
+      ggplot2::geom_abline(data = df_domain,
+                           mapping = ggplot2::aes(intercept = Intercept, slope = Slope, group = CNEC, colour = Type, linewidth = Type)) +
+      ggplot2::geom_point(data = df_netpositions,
+                          mapping = ggplot2::aes(x = NetPosition[BiddingZone == BiddingZone1],
+                                                 y = NetPosition[BiddingZone == BiddingZone2]),
+                          shape = 21, size = 3, fill = CREG::CREG_blue2, colour = "white") +
+      ggplot2::scale_x_continuous(name = paste0("\n←      Net position      →\n", BiddingZone1),
+                                  labels = scales::number_format(big.mark = ".",
+                                                                 decimal.mark = ",",
+                                                                 suffix = " MW"),
+                                  breaks = seq(-10000, 10000, 2500)) +
+      ggplot2::scale_y_continuous(name = paste0("↑\n\nNet position\n", BiddingZone2, "\n\n↓"),
+                                  labels = scales::number_format(big.mark = ".",
+                                                                 decimal.mark = ",",
+                                                                 suffix = " MW"),
+                                  breaks = seq(-10000, 10000, 2500)) +
+      ggplot2::scale_colour_manual(name = "Type of network element:",
+                                   values = c("Active" = CREG::CREG_red,
+                                              "Presolved" = CREG::CREG_grey1)) +
+      ggplot2::scale_linewidth_manual(name = "Type of network element:",
+                                      values = c("Active" = .5,
+                                                 "Presolved" = .25)) +
+      ggplot2::scale_fill_manual(name = "Domain:",
+                                 values = c("LTA" = CREG::CREG_orange,
+                                            "FB" = CREG::CREG_blue2)) +
+      ggplot2::coord_sf(xlim = c(-10000, 10000),
+                        ylim = c(-10000, 10000),
+                        expand = FALSE) +
+      ggplot2::labs(title = "Core day-ahead flow-based market coupling capacity domain and market clearing point",
+                    subtitle = paste0("Presolved domain, active constraints and market clearing point for ", BiddingZone1, " (horizontally) and ", BiddingZone2, " (vertically)\non ",
+                                      format(DateTime, "%d %B %Y"), " from ", format(DateTime, "%H:%M"), " to ", format(DateTime + lubridate::hours(1), "%H:%M"), " (", tz(DateTime), "), with reference = ", Reference),
+                    caption = "Source: calculations CREG based on data Core TSOs via JAO Publication Tool") +
+      CREG::theme_CREG() +
+      ggplot2::theme(axis.line = element_blank(),
+                     axis.ticks = element_line(linewidth = .25, colour = CREG::CREG_grey1),
+                     axis.title.y = ggplot2::element_text(angle = 0, vjust = .5),
+                     axis.text = ggplot2::element_text(size = rel(.6)),
+                     legend.position = "bottom",
+                     legend.key.size = ggplot2::unit(.25, "cm"),
+                     legend.title = ggplot2::element_text(size = ggplot2::rel(.6)),
+                     legend.text = ggplot2::element_text(size =ggplot2::rel(.6)),
+                     panel.grid.major = element_line(linewidth = .1, linetype = "dotted", colour = CREG::CREG_grey1),
+                     plot.margin = margin(0.1, 1, 0.1, 0.1, "cm"))
+
+  } else if (Interactive == TRUE) {
+
+    gg = ggplot2::ggplot() +
+      ggplot2::geom_hline(yintercept = 0, linewidth = .25) +
+      ggplot2::geom_vline(xintercept = 0, linewidth = .25) +
+      ggiraph::geom_sf_interactive(data = df_domainpolygons,
+                                   mapping = aes(fill = Type, tooltip = paste0(Type, " domain")),
+                                   alpha = .2, colour = NA) +
+      ggiraph::geom_abline_interactive(data = df_domain,
+                                       mapping = ggplot2::aes(intercept = Intercept, slope = Slope, group = CNEC, colour = Type, linewidth = Type,
+                                                              tooltip = paste0("CNEC:", CNEC,
+                                                                               "\nTSO:", TSO,
+                                                                               "\nType:", Type,
+                                                                               "\nRAM (% of Fmax): ", scales::percent(RAM, accuracy = .1, decimal.mark = ",")))) +
+      ggiraph::geom_point_interactive(data = df_netpositions,
+                                      mapping = ggplot2::aes(x = NetPosition[BiddingZone == BiddingZone1],
+                                                             y = NetPosition[BiddingZone == BiddingZone2],
+                                                             tooltip = paste0("Net positions for:\n",
+                                                                              BiddingZone1, ": ", format(round(NetPosition[BiddingZone == BiddingZone1], 0), big.mark = "."), " MW\n",
+                                                                              BiddingZone2, ": ", format(round(NetPosition[BiddingZone == BiddingZone2], 0), big.mark = "."), " MW")),
+                                      shape = 21, size = 2, fill = CREG::CREG_blue2, colour = "white") +
+      ggplot2::scale_x_continuous(name = paste0("Net position\n", BiddingZone1),
+                                  labels = scales::number_format(big.mark = ".",
+                                                                 decimal.mark = ",",
+                                                                 suffix = " MW"),
+                                  breaks = seq(-10000, 10000, 2500)) +
+      ggplot2::scale_y_continuous(name = paste0("Net position\n", BiddingZone2),
+                                  labels = scales::number_format(big.mark = ".",
+                                                                 decimal.mark = ",",
+                                                                 suffix = " MW"),
+                                  breaks = seq(-10000, 10000, 2500)) +
+      ggplot2::scale_colour_manual(name = "Type of network element:",
+                                   values = c("Active" = CREG::CREG_red,
+                                              "Presolved" = CREG::CREG_grey1)) +
+      ggplot2::scale_linewidth_manual(name = "Type of network element:",
+                                      values = c("Active" = .5,
+                                                 "Presolved" = .25)) +
+      ggplot2::scale_fill_manual(name = "Domain:",
+                                 values = c("LTA" = CREG::CREG_orange,
+                                            "FB" = CREG::CREG_blue2)) +
+      ggplot2::coord_sf(xlim = c(-10000, 10000),
+                        ylim = c(-10000, 10000),
+                        expand = FALSE) +
+      ggplot2::labs(title = "Core day-ahead flow-based market coupling capacity domain and market clearing point",
+                    subtitle = paste0("Presolved domain, active constraints and market clearing point for ", BiddingZone1, " (horizontally) and ", BiddingZone2, " (vertically)\non ",
+                                      format(DateTime, "%d %B %Y"), " from ", format(DateTime, "%H:%M"), " to ", format(DateTime + lubridate::hours(1), "%H:%M"), " (", tz(DateTime), "), with reference = ", Reference),
+                    caption = "Source: calculations CREG based on data Core TSOs via JAO Publication Tool") +      CREG::theme_CREG() +
+      theme(legend.position = "bottom",
+            legend.text = element_text(size = rel(.5)),
+            legend.title = element_text(size = rel(.5)),
+            legend.key.size = unit(.25, "cm"),
+            axis.text = element_text(size = rel(.5)),
+            axis.title = element_text(size = rel(.5)),
+            axis.line = element_blank(),
+            axis.ticks = element_line(linewidth = .25),
+            plot.title.position = "plot",
+            plot.title = element_text(size = rel(.7),
+                                      margin = margin(0, 0, .1, 0, "cm")),
+            plot.subtitle = element_text(size = rel(.6)))
+
+
+    ggiraph::girafe(ggobj = gg)
+
+  }
 
 }

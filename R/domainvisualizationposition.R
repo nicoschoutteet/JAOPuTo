@@ -336,7 +336,7 @@ JAOPuTo_domainvisualization_positions <- function(DateTime,
 
 
     ggiraph::girafe(ggobj = gg,
-                    options = list(opts_sizing(rescale = FALSE)))
+                    options = list(opts_sizing(rescale = TRUE, width = 1)))
 
   }
 

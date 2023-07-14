@@ -335,7 +335,8 @@ JAOPuTo_domainvisualization_positions <- function(DateTime,
             plot.subtitle = element_text(size = rel(.6)))
 
 
-    ggiraph::girafe(ggobj = gg)
+    ggiraph::girafe(ggobj = gg,
+                    options = list(opts_sizing(rescale = FALSE)))
 
   }
 

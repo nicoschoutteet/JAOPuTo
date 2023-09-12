@@ -23,7 +23,7 @@ JAOPuTo_pricespreads <- function(StartDateTime,
 
   list <- httr::GET("https://publicationtool.jao.eu/core/api/data/priceSpread",
                     query = list(FromUtc = format(with_tz(StartDateTime, "UTC"), "%Y-%m-%dT%H:%M:%S.000Z"),
-                                 ToUtc = format(with_tz(EndDateTime, "UTC"), "%Y-%m-%dT%H:%M:%S.000Z")))%>%
+                                 ToUtc = format(with_tz(EndDateTime + lubridate::hours(1), "UTC"), "%Y-%m-%dT%H:%M:%S.000Z")))%>%
     httr::content(as = "text") %>%
     jsonlite::fromJSON()
 

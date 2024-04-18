@@ -15,9 +15,4 @@ The JAOPuTo package contains functions to download the following datasets:
 - price spreads on Core and non-Core borders
 - scheduled exchanges between Core bidding zones
 - active constraints and shadow prices
-
-Additionally, a function to visualize the flow-based domain, returning a ggplot2 object and the corresponding dataframes, is included:
-
-```{r, echo=FALSE}
-JAOPuTo_domainvisualizations(as.POSIXct("2022-06-09 00:00", "CET"), "Belgium", "France", "MCP", TRUE)
-```
+- congestion income

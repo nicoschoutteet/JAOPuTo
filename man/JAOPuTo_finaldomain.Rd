@@ -18,5 +18,5 @@ a dataframe containing the final computation flow-based domain for Core TSOs
 Final Computation
 }
 \examples{
-df <- JAOPuTo_finaldomain(as.POSIXct("2022-06-09 00:00", "CET"), as.POSIXct("2022-12-31 23:00", "CET"))
+df <- JAOPuTo_finaldomain(as.POSIXct("2022-06-09 00:00", "CET"), as.POSIXct("2022-06-09 23:00", "CET"))
 }

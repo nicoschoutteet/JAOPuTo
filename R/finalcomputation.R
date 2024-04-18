@@ -14,7 +14,7 @@
 #' @import tibble
 #' @import tidyselect
 #'
-#' @examples df <- JAOPuTo_finaldomain(as.POSIXct("2022-06-09 00:00", "CET"), as.POSIXct("2022-12-31 23:00", "CET"))
+#' @examples df <- JAOPuTo_finaldomain(as.POSIXct("2022-06-09 00:00", "CET"), as.POSIXct("2022-06-09 23:00", "CET"))
 JAOPuTo_finaldomain <- function(StartDateTime,
                                 EndDateTime) {
 

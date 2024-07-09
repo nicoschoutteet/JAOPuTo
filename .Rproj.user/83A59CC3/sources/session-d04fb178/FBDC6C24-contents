@@ -1,7 +1,5 @@
-JAOPuTo
+JAO Publication Tool
 ================
-Nico Schoutteet
-2024-07-09
 
 ### Introduction
 
@@ -21,6 +19,17 @@ Data sets are grouped per coordinated capacity calculation methodology.
 For example, there are different data sets for the Core day-ahead
 flow-based market coupling, the Core intraday capacity calculation,
 Italy North coordinated net transfer capacities, etc.
+
+### Usage
+
+#### Installation
+
+The package can be installed directly from this GitHub Repository:
+
+``` r
+install.packages("devtools")
+devtools::install_github("nicoschoutteet/JAOPuTo")
+```
 
 ### Package contents
 
@@ -122,8 +131,12 @@ capacity calculation region are included in this package:
   - IDCC(b) Validation Reductions
     (“CoreID_IDCCb_validationreductions.R”)
 
-### Usage
-
-### Disclaimer
-
 ### Contact
+
+This package is created and maintained by Nico Schoutteet
+
+[![Linkedin](https://cdn4.iconfinder.com/data/icons/social-media-flat-7/64/Social-media_LinkedIn-16.png)
+LinkedIn](https://www.linkedin.com/in/nicoschoutteet/ "External link to LinkedIn profile")
+
+[![E-mail](https://cdn2.iconfinder.com/data/icons/social-media-2259/512/gmail-16.png)
+E-mail](mailto:n.schoutteet@gmail.com "Send e-mail")

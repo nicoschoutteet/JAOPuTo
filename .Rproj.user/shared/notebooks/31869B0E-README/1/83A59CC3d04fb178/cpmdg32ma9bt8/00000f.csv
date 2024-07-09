@@ -1,0 +1,19 @@
+"0","install.packages(""devtools"")"
+"1","Error in "
+"1",""
+"1","install.packages"
+"1",""
+"1"," : "
+"1",""
+"1","Updating loaded packages"
+"1",""
+"1","
+"
+"0","devtools::install_github(""nicoschoutteet/JAOPuTo"")"
+"2","Error: Failed to install 'JAOPuTo' from GitHub:
+  HTTP error 404.
+  Not Found
+
+  Did you spell the repo owner (`nicoschoutteet`) and repo name (`JAOPuTo`) correctly?
+  - If spelling is correct, check that you have the required permissions to access the repo.
+"

@@ -31,6 +31,59 @@ install.packages("devtools")
 devtools::install_github("nicoschoutteet/JAOPuTo")
 ```
 
+#### Functions
+
+Data can be downloaded directly into a tidy dataframe (tibble):
+
+``` r
+data <- JAOPuTo::JAOPuTo_Core_netpositions(as.POSIXct("2024-01-01 00:00", "CET"), 
+                                           as.POSIXct("2024-01-01 23:00", "CET"))
+
+utils::head(data)
+```
+
+    ## # A tibble: 6 × 4
+    ##   DateTime            BiddingZoneAbb BiddingZone        NetPosition
+    ##   <dttm>              <chr>          <chr>                    <dbl>
+    ## 1 2024-01-01 00:00:00 ALBE           ALEGrO Belgium            192.
+    ## 2 2024-01-01 00:00:00 ALDE           ALEGrO Germany           -192.
+    ## 3 2024-01-01 00:00:00 AT             Austria                 -2416.
+    ## 4 2024-01-01 00:00:00 BE             Belgium                  1833.
+    ## 5 2024-01-01 00:00:00 CZ             Czech Republic           2013.
+    ## 6 2024-01-01 00:00:00 DE             Germany/Luxembourg       6287.
+
+or visualized by inputting it in a `ggplot` call:
+
+``` r
+JAOPuTo::JAOPuTo_Core_netpositions(as.POSIXct("2024-01-01 00:00", "CET"),
+                                   as.POSIXct("2024-01-01 23:00", "CET")) %>% 
+  dplyr::filter(BiddingZone == "Belgium") %>% 
+  ggplot2::ggplot(aes(DateTime, NetPosition)) +
+  ggplot2::geom_line() +
+  ggplot2::theme_minimal()
+```
+
+![](README_files/figure-gfm/example-ggplot-1.png)<!-- -->
+
+#### Documentation
+
+The functions contain a brief description, including which function
+parameters to declare (most often StartDateTime and EndDateTime) and a
+brief description of the data that will be downloaded.
+
+``` r
+?JAOPuTo::JAOPuTo_Core_netpositions()
+```
+
+A more in-depth description of the datasets is found in the Publication
+Handbooks:
+
+- Core Day-Ahead: 🔗
+  <https://publicationtool.jao.eu/core/CORE_PublicationHandbook>
+
+- Core Intraday: 🔗
+  <https://publicationtool.jao.eu/PublicationHandbook/Core_IDCC_PublicationTool_Handbook_v1.3.pdf>
+
 ### Package contents
 
 At this stage, functions to access to the datasets from the Core

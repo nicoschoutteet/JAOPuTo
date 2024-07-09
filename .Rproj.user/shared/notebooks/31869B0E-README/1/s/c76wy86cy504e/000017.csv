@@ -1,0 +1,9 @@
+"0",""
+"0","JAOPuTo::JAOPuTo_Core_netpositions(as.POSIXct(""2024-01-01 00:00"", ""CET""),"
+"0","                                   as.POSIXct(""2024-01-01 23:00"", ""CET"")) %>% "
+"0","  filter(BiddingZone == ""Belgium"") %>% "
+"0","  ggplot(aes(lubridate::hour(DateTime), NetPosition)) +"
+"0","  geom_line()"
+"2","Error in JAOPuTo::JAOPuTo_Core_netpositions(as.POSIXct(""2024-01-01 00:00"",  : 
+  could not find function ""%>%""
+"

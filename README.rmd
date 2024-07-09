@@ -3,6 +3,10 @@ title: "JAO Publication Tool"
 output: github_document
 ---
 
+```{r, eval = TRUE, include = FALSE, echo = FALSE}
+library(tidyverse)
+```
+
 ### Introduction
 
 This package provides a number of wrapper functions to access the data sets from the JAO Publication Tool. These data sets relate to the calculation of cross-zonal electricity transmission capacity in different European regions.
@@ -14,13 +18,57 @@ Through the JAO Publication Tool (🔗 <https://publicationtool.jao.eu/>), Europ
 Data sets are grouped per coordinated capacity calculation methodology. For example, there are different data sets for the Core day-ahead flow-based market coupling, the Core intraday capacity calculation, Italy North coordinated net transfer capacities, etc.
 
 ### Usage
+
 #### Installation
+
 The package can be installed directly from this GitHub Repository:
 
 ```{r install-package, eval = FALSE}
 install.packages("devtools")
 devtools::install_github("nicoschoutteet/JAOPuTo")
 ```
+
+#### Functions
+
+Data can be downloaded directly into a tidy dataframe (tibble):
+
+```{r example-functions}
+
+data <- JAOPuTo::JAOPuTo_Core_netpositions(as.POSIXct("2024-01-01 00:00", "CET"), 
+                                           as.POSIXct("2024-01-01 23:00", "CET"))
+
+utils::head(data)
+
+```
+
+or visualized by inputting it in a `ggplot` call:
+
+```{r example-ggplot}
+
+JAOPuTo::JAOPuTo_Core_netpositions(as.POSIXct("2024-01-01 00:00", "CET"),
+                                   as.POSIXct("2024-01-01 23:00", "CET")) %>% 
+  dplyr::filter(BiddingZone == "Belgium") %>% 
+  ggplot2::ggplot(aes(DateTime, NetPosition)) +
+  ggplot2::geom_line() +
+  ggplot2::theme_minimal()
+
+```
+
+#### Documentation
+
+The functions contain a brief description, including which function parameters to declare (most often StartDateTime and EndDateTime) and a brief description of the data that will be downloaded.
+
+```{r help-functions, eval = FALSE}
+
+?JAOPuTo::JAOPuTo_Core_netpositions()
+
+```
+
+A more in-depth description of the datasets is found in the Publication Handbooks:
+
+-   Core Day-Ahead: 🔗 <https://publicationtool.jao.eu/core/CORE_PublicationHandbook>
+
+-   Core Intraday: 🔗 <https://publicationtool.jao.eu/PublicationHandbook/Core_IDCC_PublicationTool_Handbook_v1.3.pdf>
 
 ### Package contents
 

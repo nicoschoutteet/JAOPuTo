@@ -36,7 +36,7 @@ JAOPuTo_CoreID_IDCCa_finalNTC <- function(StartDateTime,
     dplyr::select(-id, -dateTimeUtc) %>%
     tidyr::pivot_longer(-DateTime,
                         names_to = "Variable",
-                        values_to = "ATC") %>%
+                        values_to = "NTC") %>%
     dplyr::mutate(BiddingZoneAbbFrom = stringr::str_split(Variable, "_", simplify = TRUE)[, 2],
                   BiddingZoneAbbTo = stringr::str_split(Variable, "_", simplify = TRUE)[, 3],
                   BiddingZoneFrom = dplyr::case_match(BiddingZoneAbbFrom,
@@ -71,7 +71,7 @@ JAOPuTo_CoreID_IDCCa_finalNTC <- function(StartDateTime,
                                                     "SI" ~ "Slovenia",
                                                     "SK" ~ "Slovakia",
                                                     .default = BiddingZoneAbbTo)) %>%
-    dplyr::select(DateTime, BiddingZoneAbbFrom, BiddingZoneAbbTo, BiddingZoneFrom, BiddingZoneTo, ATC) %>%
+    dplyr::select(DateTime, BiddingZoneAbbFrom, BiddingZoneAbbTo, BiddingZoneFrom, BiddingZoneTo, NTC) %>%
     return()
 
 }

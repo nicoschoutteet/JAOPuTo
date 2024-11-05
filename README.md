@@ -84,6 +84,9 @@ Handbooks:
 - Core Intraday: 🔗
   <https://publicationtool.jao.eu/PublicationHandbook/Core_IDCC_PublicationTool_Handbook_v1.3.pdf>
 
+- Nordic day-Ahead: 🔗
+  <https://publicationtool.jao.eu/PublicationHandbook/Nordic_PublicationTool_Handbook_v1.1.pdf>
+
 ### Package contents
 
 At this stage, functions to access to the datasets from the Core

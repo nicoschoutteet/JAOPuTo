@@ -41,21 +41,21 @@ JAOPuTo_Core_maxnetpositions <- function(StartDateTime,
     dplyr::mutate(BiddingZoneAbb = substr(Variable, 4, length(Variable)),
                   Direction = dplyr::case_match(substr(Variable, 1, 3), "min" ~ "Import", "max" ~ "Export"),
                   BiddingZone = dplyr::case_match(BiddingZoneAbb,
-                                              "ALBE" ~ "ALEGrO Belgium",
-                                              "ALDE" ~ "ALEGrO Germany",
-                                              "AT" ~ "Austria",
-                                              "BE" ~ "Belgium",
-                                              "CZ" ~ "Czech Republic",
-                                              "DE" ~ "Germany/Luxembourg",
-                                              "FR" ~ "France",
-                                              "HR" ~ "Croatia",
-                                              "HU" ~ "Hungary",
-                                              "NL" ~ "Netherlands",
-                                              "PL" ~ "Poland",
-                                              "RO" ~ "Romania",
-                                              "SI" ~ "Slovenia",
-                                              "SK" ~ "Slovakia")) %>%
+                                                  "ALBE" ~ "ALEGrO Belgium",
+                                                  "ALDE" ~ "ALEGrO Germany",
+                                                  "AT" ~ "Austria",
+                                                  "BE" ~ "Belgium",
+                                                  "CZ" ~ "Czech Republic",
+                                                  "DE" ~ "Germany/Luxembourg",
+                                                  "FR" ~ "France",
+                                                  "HR" ~ "Croatia",
+                                                  "HU" ~ "Hungary",
+                                                  "NL" ~ "Netherlands",
+                                                  "PL" ~ "Poland",
+                                                  "RO" ~ "Romania",
+                                                  "SI" ~ "Slovenia",
+                                                  "SK" ~ "Slovakia")) %>%
     dplyr::select(DateTime, BiddingZoneAbb, BiddingZone, Direction, MaxNetPosition) %>%
-  return()
+    return()
 
 }

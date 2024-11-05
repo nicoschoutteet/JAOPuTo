@@ -36,7 +36,7 @@ JAOPuTo_Core_finalcomputation <- function(StartDateTime,
 
   } else if (Presolved == FALSE) {
 
-    API_GET <- httr::GET("https://publicationtool.jao.eu/core/api/data/initialComputation",
+    API_GET <- httr::GET("https://publicationtool.jao.eu/core/api/data/finalComputation",
                          query = list(
                            FromUtc = format(lubridate::with_tz(StartDateTime, "UTC"),
                                             "%Y-%m-%dT%H:%M:%S.0000Z"),

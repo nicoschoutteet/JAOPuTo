@@ -107,6 +107,8 @@ capacity calculation region are included in this package:
   - Validation Reductions (“Core_validationreductions.R”)
 
   - Pre-final computation (“Core_prefinalcomputation.R”)
+ 
+  - Final computation ("Core_finalcomputation.R")
 
   - Long-Term Nominations (“Core_ltn.R”)
 
@@ -186,6 +188,25 @@ https://github.com/nicoschoutteet/JAOPuTo/blob/main/README.md
 
 - Nordic Day-Ahead Flow-Based Market Coupling (“Nordic DA FBMC”, 🔗
   <https://publicationtool.jao.eu/nordic/>)
+  - Monitoring (“Nordic_monitoring.R”)
+
+  - Final computation ("Nordic_finalcomputation.R")
+
+  - Shadow Prices (“Nordic_shadowprices.R”)
+ 
+  - Max net positions (“Nordic_maxnetpositions.R”)
+ 
+  - Net Position (“Nordic_netpositions.R”)
+ 
+  - Max Border Flow ("Nordic_maxborderflow.R")
+ 
+  - Max Exchanges ("Nordic_maxexchanges.R")
+
+  - Reference Net Positions ("Nordic_referencenetpositions.R")
+ 
+  - Spanning & DFP ("Nordic_spanningDFP.R")
+ 
+  - Validation Reductions ("Nordic_validationreductions.R")
 
 ### Contact
 

@@ -186,7 +186,7 @@ https://github.com/nicoschoutteet/JAOPuTo/blob/main/README.md
   - IDCC(b) Validation Reductions
     (“CoreID_IDCCb_validationreductions.R”)
 
-- Nordic Day-Ahead Flow-Based Market Coupling (“Nordic DA FBMC”, 🔗
+- **NEW NOV 2024** Nordic Day-Ahead Flow-Based Market Coupling (“Nordic DA FBMC”, 🔗
   <https://publicationtool.jao.eu/nordic/>)
   - Monitoring (“Nordic_monitoring.R”)
 

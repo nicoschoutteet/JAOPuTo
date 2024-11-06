@@ -176,7 +176,7 @@ capacity calculation region are included in this package:
   - IDCC(b) Max Exchanges (“CoreID_IDCCb_maxexchanges.R”)
 
   - IDCC(b) Max Net Positions (“CoreID_IDCCb_maxnetpositions.R”)
-https://github.com/nicoschoutteet/JAOPuTo/blob/main/README.md
+
   - IDCC(b) Reference Net Positions
     (“CoreID_IDCCb_referencenetpositions.R”)
 

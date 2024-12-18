@@ -1,0 +1,27 @@
+{
+    "id": "BC8C1825",
+    "path": "~/GitHub/JAOPuTo/R/Core_shadowprices.R",
+    "project_path": "R/Core_shadowprices.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1734526918818.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "tempName": "Untitled2",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "65,39",
+        "scrollLine": "31"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1734526841,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1734526841,
+    "read_only": false,
+    "read_only_alternatives": []
+}

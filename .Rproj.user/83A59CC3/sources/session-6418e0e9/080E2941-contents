@@ -84,7 +84,7 @@ JAOPuTo_Nordic_finalcomputation <- function(StartDateTime,
                            TRUE ~ lat),
            lng = case_when(is.na(CNE_EIC) & CNE_Name == "NL_export" ~ 5.65991,
                            is.na(CNE_EIC) ~ 5.66727012750908,
-                           TRUE ~ lng))%>%
+                           TRUE ~ lng)) %>%
 
     return()
 

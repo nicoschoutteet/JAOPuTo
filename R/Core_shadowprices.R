@@ -15,7 +15,7 @@
 #' @examples JAOPuTo_Core_shadowprices(as.POSIXct("2024-01-01 00:00", "Europe/Brussels"),
 #' as.POSIXct("2024-01-01 23:00", "Europe/Brussels"))
 JAOPuTo_Core_shadowprices <- function(StartDateTime,
-                                            EndDateTime) {
+                                      EndDateTime) {
 
   df <- tibble::tibble()
 
@@ -55,6 +55,7 @@ JAOPuTo_Core_shadowprices <- function(StartDateTime,
            F0all = f0all, Fuaf = fuaf, AMR = amr, LTAMargin = ltaMargin, CVA = cva, IVA = iva, FtotalLTN = ftotalLtn,
            starts_with("hub_")) %>%
     rename_with(~ gsub("^hub_", "ptdf_", .), starts_with("hub_")) %>%
+    left_join(read_csv(system.file("extdata", "Core SGM 6th release.csv", package = "JAOPuTo"))) %>%
     return()
 
 }

@@ -80,6 +80,15 @@ JAOPuTo_Core_prefinalcomputatation <- function(StartDateTime,
            RAM = ram, Imax = imax, U = u, Fmax = fmax, FRM = frm, FrefInit = frefInit, Fnrao = fnrao, Fref = fref, FCore = fcore,
            Fall = fall, Fuaf = fuaf, AMR = amr, LTAMargin = ltaMargin, CVA = cva, IVA = iva, FtotalLTN = ftotalLtn,
            starts_with("ptdf_")) %>%
+    left_join(read_csv(system.file("extdata", "Core SGM 6th release.csv", package = "JAOPuTo"))) %>%
+    mutate(Type = case_when(is.na(CNE_EIC) ~ "External constraint",
+                            TRUE ~ Type),
+           lat = case_when(is.na(CNE_EIC) & CNE_Name == "NL_export" ~ 52.30861,
+                           is.na(CNE_EIC) ~ 50.753002430229,
+                           TRUE ~ lat),
+           lng = case_when(is.na(CNE_EIC) & CNE_Name == "NL_export" ~ 5.65991,
+                           is.na(CNE_EIC) ~ 5.66727012750908,
+                           TRUE ~ lng)) %>%
     return()
 
 }

@@ -77,7 +77,7 @@ JAOPuTo_Core_finalcomputation <- function(StartDateTime,
     select(DateTime, TSO, CNE_Name = cneName, CNE_EIC = cneEic, Direction = direction,
            BiddingZoneAbbFrom = hubFrom, BiddingZoneAbbTo = hubTo, SubstationFrom = substationFrom, SubstationTo = substationTo,
            ElementType = elementType, FmaxType = fmaxType, TSO_C, C_Name = contingencies_branchName, C_EIC = contingencies_branchEic, Presolved = presolved,
-           RAM = ram, Imax = imax, U = u, Fmax = fmax, FRM = frm, FrefInit = frefInit, Fnrao = fnrao, Fref = fref, FCore = fcore,
+           RAM = ram, Imax = imax, U = u, Fmax = fmax, minRAMtarget = minRamTarget, minRAMfactor = minRamFactor, FRM = frm, FrefInit = frefInit, Fnrao = fnrao, Fref = fref, FCore = fcore,
            Fall = fall, Fuaf = fuaf, AMR = amr, LTAMargin = ltaMargin, CVA = cva, IVA = iva, FtotalLTN = ftotalLtn,
            starts_with("ptdf_")) %>%
     left_join(read_csv(system.file("extdata", "Core SGM 6th release.csv", package = "JAOPuTo"))) %>%

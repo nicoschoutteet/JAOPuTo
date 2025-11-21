@@ -1,6 +1,6 @@
 Package: JAOPuTo
 Type: Package
-Title: Access JAO Publication Tool API
+Title: JAO Publication Tool API
 Version: 0.1.0
 Author: Nico Schoutteet
 Maintainer: Nico Schoutteet <n.schoutteet@gmail.com>

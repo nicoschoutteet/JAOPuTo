@@ -1,0 +1,5 @@
+CoreBiddingZones <- tibble(
+  BiddingZoneAbb = c("ALBE", "ALDE", "AT", "BE", "CZ", "DE", "HR", "HU", "FR", "NL", "PL", "RO", "SI", "SK"),
+  BiddingZone = c("ALEGrO Belgium", "ALEGrO Germany", "Austria", "Belgium", "Czech Republic", "Germany/Luxembourg",
+                  "Croatia", "Hungary", "France", "Netherlands", "Poland", "Romania", "Slovenia", "Slovakia")
+)

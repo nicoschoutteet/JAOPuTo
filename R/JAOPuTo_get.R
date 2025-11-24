@@ -48,7 +48,7 @@ JAOPuTo_get <- function(dataset,
                         end,
                         skip = 0L,
                         take = 4000L,
-                        rate_limit_per_minute = 100,
+                        rate_limit_per_minute = 80,
                         ...) {
 
   base_url <- "https://publicationtool.jao.eu"

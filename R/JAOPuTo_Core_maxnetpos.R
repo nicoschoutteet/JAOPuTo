@@ -1,4 +1,4 @@
-#' JAOPuTo_Core_maxnetpos
+#' Core - Max Net Positions
 #'
 #' @description
 #' Download maximum import and export position for selected bidding zones in Core DA FBMC.

@@ -11,7 +11,8 @@ JAOPuTo_get(
   end,
   skip = 0L,
   take = 4000L,
-  rate_limit_per_minute = 100
+  rate_limit_per_minute = 100,
+  ...
 )
 }
 \arguments{
@@ -23,31 +24,48 @@ JAOPuTo_get(
 
 \item{end}{End datetime; (POSIXct, Date, or character convertible to POSIXct)}
 
-\item{skip}{Integer; pagination offset}
+\item{skip}{Integer; initial pagination offset (per 2-day chunk)}
 
-\item{take}{Integer; pagination size}
+\item{take}{Integer; pagination size (number of records per API call)}
 
 \item{rate_limit_per_minute}{Integer; maximum number of requests per minute}
+
+\item{...}{Additional query parameters passed to the API
+(e.g. `presolved = TRUE`).}
 }
 \value{
 A tibble containing the combined data returned by all API requests.
 }
 \description{
 Helper function that sends one or more GET requests to the JAO Publication Tool API,
-automatically splitting requests into 2-day intervals and applying rate limiting.
+automatically splitting requests into 2-day intervals, paginating over all results,
+and applying rate limiting.
 }
 \details{
 The function automatically splits requests into 2-day chunks because the API
-does not allow long time intervals. Rate limiting is enforced to stay below the
-API limit of 100 requests per minute.
+does not allow long time intervals. Within each chunk, it paginates over all
+results (in steps of `take`) until no more data are available. Rate limiting
+is enforced to stay below the API limit of 100 requests per minute. Any
+additional query parameters passed via `...` (e.g. `presolved`) are added to
+each request.
 }
 \examples{
 \dontrun{
+# Zonder extra query params
 JAOPuTo_get(
-  dataset = "core",
+  dataset  = "core",
   endpoint = "api/data/maxNetPos",
-  start = "2025-01-01 00:00",
-  end = "2025-01-10 23:00"
+  start    = "2025-01-01 00:00",
+  end      = "2025-01-10 23:00"
+)
+
+# Met extra query param 'presolved'
+JAOPuTo_get(
+  dataset  = "core",
+  endpoint = "api/data/finalDomains",
+  start    = "2025-01-01 00:00",
+  end      = "2025-01-10 23:00",
+  presolved = TRUE
 )
 }
 }

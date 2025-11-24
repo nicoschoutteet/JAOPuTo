@@ -2,7 +2,7 @@
 % Please edit documentation in R/JAOPuTo_Core_maxnetpos.R
 \name{JAOPuTo_Core_maxnetpos}
 \alias{JAOPuTo_Core_maxnetpos}
-\title{JAOPuTo_Core_maxnetpos}
+\title{Core - Max Net Positions}
 \usage{
 JAOPuTo_Core_maxnetpos(start, end)
 }

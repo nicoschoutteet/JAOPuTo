@@ -1,0 +1,26 @@
+{
+    "id": "A73DBE3B",
+    "path": "~/GitHub/JAOPuTo/R/JAOPuTo_Core_initialcomputation.R",
+    "project_path": "R/JAOPuTo_Core_initialcomputation.R",
+    "type": "r_source",
+    "hash": "4291206788",
+    "contents": "",
+    "dirty": false,
+    "created": 1764075480044.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "60,36",
+        "scrollLine": "24"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1764075491,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1764075491103,
+    "read_only": false,
+    "read_only_alternatives": []
+}

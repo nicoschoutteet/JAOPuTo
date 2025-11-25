@@ -59,7 +59,7 @@ JAOPuTo_get <- function(dataset,
   extra_query <- list(...)
   reserved <- c("fromUtc", "toUtc", "skip", "take")
 
-  # Negeer evt. conflicterende namen in ...
+  # Ignor conflicting query parameters
   if (length(extra_query)) {
     conflict <- intersect(names(extra_query), reserved)
     if (length(conflict) > 0) {
@@ -72,7 +72,7 @@ JAOPuTo_get <- function(dataset,
     }
   }
 
-  # Tijd tussen requests obv rate limiting (optioneel, extra voorzichtig)
+  # Time between requests based on rate limiting
   sleep_time <- if (is.finite(rate_limit_per_minute) &&
                     rate_limit_per_minute > 0) {
     60 / rate_limit_per_minute
@@ -91,7 +91,7 @@ JAOPuTo_get <- function(dataset,
     format(x, "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
   }
 
-  # 2-daagse intervallen
+  # 2-day intervals
   days <- seq(as.Date(start_utc), as.Date(end_utc), by = "2 day")
 
   dataset_clean  <- sub("/+$", "", dataset)
@@ -116,7 +116,7 @@ JAOPuTo_get <- function(dataset,
 
     url <- paste(base_url, dataset_clean, endpoint_clean, sep = "/")
 
-    # Paginering binnen de 2-daagse chunk
+    # Pagination in 2-day chunk
     current_skip <- skip
 
     repeat {
@@ -130,31 +130,31 @@ JAOPuTo_get <- function(dataset,
       # Merge basis + extra query-params
       query <- c(base_query, extra_query)
 
-      # ---- NIEUW: 429-handling met retries ----
+      # ---- 429-handling with retries ----
       attempt <- 1L
       repeat {
         resp <- httr::GET(url, query = query)
         status <- httr::status_code(resp)
 
         if (status == 429L) {
-          # Kijk of er een Retry-After header is
+          # Check if there is a retry-after header
           retry_after_hdr <- httr::headers(resp)[["Retry-After"]]
           retry_after <- suppressWarnings(as.numeric(retry_after_hdr))
 
           if (is.na(retry_after) || is.null(retry_after)) {
-            # fallback: exponentiële backoff (in seconden)
+            # fallback: exponential backoff (in seconds)
             retry_after <- 30 * attempt  # 30s, 60s, 90s, ...
           }
 
           message(
-            "JAOPuTo_get(): HTTP 429 voor chunk ", i, "/", length(days),
-            " (skip = ", current_skip, "), poging ", attempt,
-            ". Wachten ", retry_after, " seconden..."
+            "JAOPuTo_get(): HTTP 429 for chunk ", i, "/", length(days),
+            " (skip = ", current_skip, "), attempt ", attempt,
+            ". Wait ", retry_after, " seconds..."
           )
 
           if (attempt >= max_retries_429) {
             stop(
-              "JAOPuTo_get(): te veel opeenvolgende 429-responses; ",
+              "JAOPuTo_get(): too many successive 429-responses; ",
               "aborting after ", max_retries_429, " retries.",
               call. = FALSE
             )
@@ -162,22 +162,22 @@ JAOPuTo_get <- function(dataset,
 
           Sys.sleep(retry_after)
           attempt <- attempt + 1L
-          next   # zelfde request opnieuw proberen
+          next   # retry same request
         }
 
         if (httr::http_error(resp)) {
           stop(
             "JAOPuTo_get(): HTTP error (",
-            status, ") voor chunk ",
+            status, ") for chunk ",
             i, "/", length(days), " (skip = ", current_skip, ").",
             call. = FALSE
           )
         }
 
-        # Succes: uit deze inner repeat
+        # Succes: escape inner repeat
         break
       }
-      # ---- Einde 429-handling ----
+      # ---- End 429-handling ----
 
       txt    <- httr::content(resp, as = "text", encoding = "UTF-8")
       parsed <- jsonlite::fromJSON(txt, simplifyDataFrame = TRUE)

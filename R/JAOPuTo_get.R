@@ -47,7 +47,7 @@ JAOPuTo_get <- function(dataset,
                         start,
                         end,
                         skip = 0L,
-                        take = 4000L,
+                        take = 10000L,
                         rate_limit_per_minute = 80,
                         max_retries_429 = 5L,
                         ...) {

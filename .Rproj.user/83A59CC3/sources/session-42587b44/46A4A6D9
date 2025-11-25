@@ -1,27 +1,27 @@
 {
-    "id": "C90C66AF",
-    "path": "~/GitHub/JAOPuTo/R/JAOPuTo_Core_finalcomputation.R",
-    "project_path": "R/JAOPuTo_Core_finalcomputation.R",
+    "id": "46A4A6D9",
+    "path": "~/GitHub/JAOPuTo/R/JAOPuTo_Core_netpositions.R",
+    "project_path": "R/JAOPuTo_Core_netpositions.R",
     "type": "r_source",
-    "hash": "4215540634",
+    "hash": "0",
     "contents": "",
     "dirty": false,
-    "created": 1764075458170.0,
+    "created": 1764077605754.0,
     "source_on_save": false,
     "relative_order": 1,
     "properties": {
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "60,36",
-        "scrollLine": "27"
+        "cursorPosition": "42,35",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1764075469,
+    "lastKnownWriteTime": 1764077614,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1764075469106,
+    "last_content_update": 1764077614237,
     "read_only": false,
     "read_only_alternatives": []
 }

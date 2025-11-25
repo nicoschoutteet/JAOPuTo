@@ -49,6 +49,7 @@ JAOPuTo_get <- function(dataset,
                         skip = 0L,
                         take = 4000L,
                         rate_limit_per_minute = 80,
+                        max_retries_429 = 5L,
                         ...) {
 
   base_url <- "https://publicationtool.jao.eu"
@@ -70,7 +71,7 @@ JAOPuTo_get <- function(dataset,
     }
   }
 
-  # Tijd tussen requests obv rate limiting
+  # Tijd tussen requests obv rate limiting (optioneel, extra voorzichtig)
   sleep_time <- if (is.finite(rate_limit_per_minute) &&
                     rate_limit_per_minute > 0) {
     60 / rate_limit_per_minute
@@ -79,7 +80,7 @@ JAOPuTo_get <- function(dataset,
   }
 
   start_utc <- as.POSIXct(start, tz = "UTC")
-  end_utc   <- as.POSIXct(end, tz = "UTC") + lubridate::hours(1)
+  end_utc   <- as.POSIXct(end,   tz = "UTC") + lubridate::hours(1)
 
   if (end_utc < start_utc) {
     stop("JAOPuTo_get(): 'end' is before 'start'.", call. = FALSE)
@@ -128,16 +129,54 @@ JAOPuTo_get <- function(dataset,
       # Merge basis + extra query-params
       query <- c(base_query, extra_query)
 
-      resp <- httr::GET(url, query = query)
+      # ---- NIEUW: 429-handling met retries ----
+      attempt <- 1L
+      repeat {
+        resp <- httr::GET(url, query = query)
+        status <- httr::status_code(resp)
 
-      if (httr::http_error(resp)) {
-        stop(
-          "JAOPuTo_get(): HTTP error (",
-          httr::status_code(resp), ") voor chunk ",
-          i, "/", length(days), " (skip = ", current_skip, ").",
-          call. = FALSE
-        )
+        if (status == 429L) {
+          # Kijk of er een Retry-After header is
+          retry_after_hdr <- httr::headers(resp)[["Retry-After"]]
+          retry_after <- suppressWarnings(as.numeric(retry_after_hdr))
+
+          if (is.na(retry_after) || is.null(retry_after)) {
+            # fallback: exponentiële backoff (in seconden)
+            retry_after <- 30 * attempt  # 30s, 60s, 90s, ...
+          }
+
+          message(
+            "JAOPuTo_get(): HTTP 429 voor chunk ", i, "/", length(days),
+            " (skip = ", current_skip, "), poging ", attempt,
+            ". Wachten ", retry_after, " seconden..."
+          )
+
+          if (attempt >= max_retries_429) {
+            stop(
+              "JAOPuTo_get(): te veel opeenvolgende 429-responses; ",
+              "aborting after ", max_retries_429, " retries.",
+              call. = FALSE
+            )
+          }
+
+          Sys.sleep(retry_after)
+          attempt <- attempt + 1L
+          next   # zelfde request opnieuw proberen
+        }
+
+        if (httr::http_error(resp)) {
+          stop(
+            "JAOPuTo_get(): HTTP error (",
+            status, ") voor chunk ",
+            i, "/", length(days), " (skip = ", current_skip, ").",
+            call. = FALSE
+          )
+        }
+
+        # Succes: uit deze inner repeat
+        break
       }
+      # ---- Einde 429-handling ----
 
       txt    <- httr::content(resp, as = "text", encoding = "UTF-8")
       parsed <- jsonlite::fromJSON(txt, simplifyDataFrame = TRUE)

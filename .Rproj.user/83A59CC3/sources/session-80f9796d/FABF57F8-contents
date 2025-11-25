@@ -1,4 +1,4 @@
-#' Core - Pre-Final Computation (early publication)
+#' Core - Initial Computation Computation (Virgin Domain)
 #'
 #' @description
 #' Download pre-final flow-based parameters (early publication) in Core DA FBMC.
@@ -13,12 +13,12 @@
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
-#' JAOPuTo_Core_prefinalcomputation(
+#' JAOPuTo_Core_initialcomputation(
 #'   start = "2025-01-01 00:00",
 #'   end = "2025-01-01 01:00"
 #' )
 #' }
-JAOPuTo_Core_prefinalcomputation <- function(start, end,
+JAOPuTo_Core_initialcomputation <- function(start, end,
                                              presolved = TRUE) {
 
   # Filter JSON opbouwen
@@ -27,9 +27,9 @@ JAOPuTo_Core_prefinalcomputation <- function(start, end,
     auto_unbox = TRUE
   )
 
-  JAOPuTo_get(
+  df <- JAOPuTo_get(
     dataset  = "core",
-    endpoint = "api/data/preFinalComputation",
+    endpoint = "api/data/initialComputation",
     start    = start,
     end      = end,
     Filter   = filter_json
@@ -58,7 +58,7 @@ JAOPuTo_Core_prefinalcomputation <- function(start, end,
                                             "NA" ~ NA,
                                             .default = .data$contTso),
                   minRAM_actual = .data$minRamFactor / .data$fmax) |>
-    dplyr::left_join(readr::read_csv(read_core_sgm()) |>
+    dplyr::left_join(readr::read_csv(sgm) |>
                        dplyr::select(.data$CNE_EIC, "CNE_Lat" = .data$lat, "CNE_Lng" = .data$lng),
                      by = c("cneEic" = "CNE_EIC")) |>
     dplyr::select(.data$DateTime,

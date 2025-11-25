@@ -58,7 +58,7 @@ JAOPuTo_Core_prefinalcomputation <- function(start, end,
                                             "NA" ~ NA,
                                             .default = .data$contTso),
                   minRAM_actual = .data$minRamFactor / .data$fmax) |>
-    dplyr::left_join(readr::read_csv(read_core_sgm()) |>
+    dplyr::left_join(readr::read_csv(sgm) |>
                        dplyr::select(.data$CNE_EIC, "CNE_Lat" = .data$lat, "CNE_Lng" = .data$lng),
                      by = c("cneEic" = "CNE_EIC")) |>
     dplyr::select(.data$DateTime,

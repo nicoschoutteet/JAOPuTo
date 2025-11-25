@@ -10,8 +10,9 @@ JAOPuTo_get(
   start,
   end,
   skip = 0L,
-  take = 4000L,
-  rate_limit_per_minute = 100,
+  take = 10000L,
+  rate_limit_per_minute = 80,
+  max_retries_429 = 5L,
   ...
 )
 }
@@ -29,6 +30,8 @@ JAOPuTo_get(
 \item{take}{Integer; pagination size (number of records per API call)}
 
 \item{rate_limit_per_minute}{Integer; maximum number of requests per minute}
+
+\item{max_retries_429}{Integer; maximum number of retry attempts after HTTP 429 error}
 
 \item{...}{Additional query parameters passed to the API
 (e.g. `presolved = TRUE`).}

@@ -1,7 +1,7 @@
-#' Core - Scheduled Exchanges
+#' Core IDA1 - Price Spreads
 #'
 #' @description
-#' Download  bilateral scheduled exchanges between selected bidding zones in Core DA FBMC.
+#' Download price spreads between selected bidding zones in Core intraday auction 1.
 #'
 #' @param start Start datetime; (POSIXct, Date, or character convertible to POSIXct)
 #' @param end End datetime; (POSIXct, Date, or character convertible to POSIXct)
@@ -12,18 +12,18 @@
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
-#' JAOPuTo_Core_scheduledexchanges(
+#' JAOPuTo_CoreID_IDA1_pricespreads(
 #'   start = "2025-01-01 00:00",
 #'   end = "2025-01-10 23:00"
 #' )
 #' }
-JAOPuTo_Core_scheduledexchanges <- function(start,
+JAOPuTo_CoreID_IDA1_pricespreads <- function(start,
                                       end) {
   # access helper function
   JAOPuTo_get(
 
-    dataset = "core",
-    endpoint = "api/data/scheduledExchanges",
+    dataset = "coreID",
+    endpoint = "api/data/ID1_priceSpread",
     start = start,
     end = end
   ) |> # endpoint-specific data transformations
@@ -33,7 +33,7 @@ JAOPuTo_Core_scheduledexchanges <- function(start,
                   tidyselect::starts_with("border")) |>
     tidyr::pivot_longer(cols = -.data$DateTime,
                         names_to = "Variable",
-                        values_to = "ScheduledExchange") |>
+                        values_to = "PriceSpread") |>
     dplyr::mutate(BiddingZoneFromAbb = substr(.data$Variable, 8,9),
                   BiddingZoneToAbb = substr(.data$Variable, 11, 12)) |>
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneFromAbb = .data$BiddingZoneAbb,
@@ -45,5 +45,5 @@ JAOPuTo_Core_scheduledexchanges <- function(start,
                   .data$BiddingZoneFromAbb,
                   .data$BiddingZoneTo,
                   .data$BiddingZoneToAbb,
-                  .data$ScheduledExchange)
+                  .data$PriceSpread)
 }

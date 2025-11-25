@@ -1,7 +1,7 @@
-#' Core - Scheduled Exchanges
+#' Core IDA1 - Sheduled Exchanges
 #'
 #' @description
-#' Download  bilateral scheduled exchanges between selected bidding zones in Core DA FBMC.
+#' Download  bilateral scheduled exchanges between selected bidding zones in Core intraday auction 1.
 #'
 #' @param start Start datetime; (POSIXct, Date, or character convertible to POSIXct)
 #' @param end End datetime; (POSIXct, Date, or character convertible to POSIXct)
@@ -12,18 +12,18 @@
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
-#' JAOPuTo_Core_scheduledexchanges(
+#' JAOPuTo_CoreID_IDA1_scheduledexchanges(
 #'   start = "2025-01-01 00:00",
 #'   end = "2025-01-10 23:00"
 #' )
 #' }
-JAOPuTo_Core_scheduledexchanges <- function(start,
-                                      end) {
+JAOPuTo_CoreID_IDA1_scheduledexchanges <- function(start,
+                                            end) {
   # access helper function
   JAOPuTo_get(
 
-    dataset = "core",
-    endpoint = "api/data/scheduledExchanges",
+    dataset = "coreID",
+    endpoint = "api/data/ID1_scheduledExchanges",
     start = start,
     end = end
   ) |> # endpoint-specific data transformations

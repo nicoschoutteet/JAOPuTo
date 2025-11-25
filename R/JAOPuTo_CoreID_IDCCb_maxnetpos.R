@@ -1,7 +1,7 @@
-#' Core - Net Position
+#' Core IDCC(b) - Max Net Positions
 #'
 #' @description
-#' Download Core net position for selected bidding zones in Core DA FBMC.
+#' Download maximum import and export position for selected bidding zones in Core IDCC(b).
 #'
 #' @param start Start datetime; (POSIXct, Date, or character convertible to POSIXct)
 #' @param end End datetime; (POSIXct, Date, or character convertible to POSIXct)
@@ -12,33 +12,36 @@
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
-#' JAOPuTo_Core_netposition(
+#' JAOPuTo_CoreID_IDCCb_maxnetpos(
 #'   start = "2025-01-01 00:00",
 #'   end = "2025-01-10 23:00"
 #' )
 #' }
-JAOPuTo_Core_netposition <- function(start,
-                                     end) {
+JAOPuTo_CoreID_IDCCb_maxnetpos <- function(start,
+                                   end) {
   # access helper function
   JAOPuTo_get(
 
-    dataset = "core",
-    endpoint = "api/data/netPos",
+    dataset = "coreID",
+    endpoint = "api/data/IDCCB_maxNetPos",
     start = start,
     end = end
   ) |> # endpoint-specific data transformations
     dplyr::mutate(dateTimeUtc = lubridate::ymd_hms(.data$dateTimeUtc, tz = "UTC"),
                   DateTime = lubridate::with_tz(.data$dateTimeUtc, "Europe/Brussels")) |>
     dplyr::select(.data$DateTime,
-                  tidyselect::starts_with("hub"),
-                  tidyselect::starts_with("delta")) |>
+                  tidyselect::starts_with("min"),
+                  tidyselect::starts_with("max")) |>
     tidyr::pivot_longer(cols = -.data$DateTime,
                         names_to = "Variable",
-                        values_to = "NetPosition") |>
-    tidyr::separate(.data$Variable, "_", into = c("hub", "BiddingZoneAbb")) |>
+                        values_to = "MaxNetPosition") |>
+    dplyr::mutate(Direction = dplyr::case_when(substr(.data$Variable, 1, 3) == "min" ~ "Import",
+                                               substr(.data$Variable, 1, 3) == "max" ~ "Export"),
+                  BiddingZoneAbb = substr(.data$Variable, 4, nchar(.data$Variable))) |>
     dplyr::left_join(CoreBiddingZones) |>
     dplyr::select(.data$DateTime,
                   .data$BiddingZone,
                   .data$BiddingZoneAbb,
-                  .data$NetPosition)
+                  .data$Direction,
+                  .data$MaxNetPosition)
 }

@@ -1,7 +1,7 @@
-#' Core - Scheduled Exchanges
+#' Core IDCC(b) - Reference Program
 #'
 #' @description
-#' Download  bilateral scheduled exchanges between selected bidding zones in Core DA FBMC.
+#' Download reference programs of Core and non-Core bidding zone borders in Core IDCC(b).
 #'
 #' @param start Start datetime; (POSIXct, Date, or character convertible to POSIXct)
 #' @param end End datetime; (POSIXct, Date, or character convertible to POSIXct)
@@ -12,18 +12,18 @@
 #' @importFrom rlang .data
 #' @examples
 #' \dontrun{
-#' JAOPuTo_Core_scheduledexchanges(
+#' JAOPuTo_CoreID_IDCCb_refprog(
 #'   start = "2025-01-01 00:00",
 #'   end = "2025-01-10 23:00"
 #' )
 #' }
-JAOPuTo_Core_scheduledexchanges <- function(start,
-                                      end) {
+JAOPuTo_CoreID_IDCCb_refprog <- function(start,
+                                         end) {
   # access helper function
   JAOPuTo_get(
 
-    dataset = "core",
-    endpoint = "api/data/scheduledExchanges",
+    dataset = "coreID",
+    endpoint = "api/data/IDCCB_refprog",
     start = start,
     end = end
   ) |> # endpoint-specific data transformations
@@ -33,9 +33,8 @@ JAOPuTo_Core_scheduledexchanges <- function(start,
                   tidyselect::starts_with("border")) |>
     tidyr::pivot_longer(cols = -.data$DateTime,
                         names_to = "Variable",
-                        values_to = "ScheduledExchange") |>
-    dplyr::mutate(BiddingZoneFromAbb = substr(.data$Variable, 8,9),
-                  BiddingZoneToAbb = substr(.data$Variable, 11, 12)) |>
+                        values_to = "ReferenceProgram") |>
+    tidyr::separate(.data$Variable, "_", into = c("global", "BiddingZoneFromAbb", "BiddingZoneToAbb")) |>
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneFromAbb = .data$BiddingZoneAbb,
                                                        BiddingZoneFrom = .data$BiddingZone)) |>
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneToAbb = .data$BiddingZoneAbb,
@@ -45,5 +44,5 @@ JAOPuTo_Core_scheduledexchanges <- function(start,
                   .data$BiddingZoneFromAbb,
                   .data$BiddingZoneTo,
                   .data$BiddingZoneToAbb,
-                  .data$ScheduledExchange)
+                  .data$ReferenceProgram)
 }

@@ -41,7 +41,7 @@ JAOPuTo_Core_activeconstraints <- function(start, end) {
                                           "Eles" ~ "ELES",
                                           "NA" ~ NA,
                                           .default = .data$tso)) |>
-    dplyr::left_join(readr::read_csv(read_core_sgm()) |>
+    dplyr::left_join(read_core_sgm() |>
                        dplyr::select(.data$CNE_EIC, "CNE_Lat" = .data$lat, "CNE_Lng" = .data$lng),
                      by = c("cnecEic" = "CNE_EIC")) |>
     dplyr::select(.data$DateTime,

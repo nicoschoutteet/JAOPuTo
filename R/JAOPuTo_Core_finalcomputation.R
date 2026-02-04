@@ -56,8 +56,7 @@ JAOPuTo_Core_finalcomputation <- function(start, end,
                                           "TENNETBV" ~ "TenneT BV",
                                           "TRANSELECTRICA" ~ "Transelectrica",
                                           "NA" ~ NA,
-                                          .default = .data$contTso),
-                  minRAM_actual = .data$minRamFactor / .data$fmax) |>
+                                          .default = .data$contTso)) |>
     dplyr::left_join(read_core_sgm() |>
                        dplyr::select(.data$CNE_EIC, "CNE_Lat" = .data$lat, "CNE_Lng" = .data$lng),
                      by = c("cneEic" = "CNE_EIC")) |>
@@ -86,7 +85,6 @@ JAOPuTo_Core_finalcomputation <- function(start, end,
                   "C_SubstationTo" = .data$contingenciescont_substationTo,
                   "Presolved" = .data$presolved,
                   "RAM" = .data$ram,
-                  .data$minRAM_actual,
                   "minRAM_target" = .data$minRamTarget,
                   "minMACZT_target" = .data$minRamFactor,
                   "minRAM_justification" = .data$justification,

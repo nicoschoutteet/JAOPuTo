@@ -2,6 +2,7 @@
 #'
 #' @description
 #' Download price spreads between selected bidding zones in Core DA FBMC.
+#' Note that the sign is inverted: JAO Publication Tool defines a negative price spread on BZ1-BZ2 when price(BZ1) > price(BZ2)
 #'
 #' @param start Start datetime; (POSIXct, Date, or character convertible to POSIXct)
 #' @param end End datetime; (POSIXct, Date, or character convertible to POSIXct)

@@ -36,7 +36,7 @@ JAOPuTo_Core_pricespreads <- function(start,
                         values_to = "PriceSpread") |>
     dplyr::mutate(BiddingZoneFromAbb = substr(.data$Variable, 8,9),
                   BiddingZoneToAbb = substr(.data$Variable, 11, 12),
-                 PriceSpread = -.data$PriceSpread) |>
+                 PriceSpread = -.data$PriceSpread) |> # note that sign is reversed (see documentation)
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneFromAbb = .data$BiddingZoneAbb,
                                                        BiddingZoneFrom = .data$BiddingZone)) |>
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneToAbb = .data$BiddingZoneAbb,

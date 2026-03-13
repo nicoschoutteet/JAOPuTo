@@ -19,7 +19,7 @@
 #' )
 #' }
 JAOPuTo_Core_pricespreads <- function(start,
-                                            end) {
+                                      end) {
   # access helper function
   JAOPuTo_get(
 
@@ -37,7 +37,7 @@ JAOPuTo_Core_pricespreads <- function(start,
                         values_to = "PriceSpread") |>
     dplyr::mutate(BiddingZoneFromAbb = substr(.data$Variable, 8,9),
                   BiddingZoneToAbb = substr(.data$Variable, 11, 12),
-                 PriceSpread = -.data$PriceSpread) |> # note that sign is reversed (see documentation)
+                  PriceSpread = -.data$PriceSpread) |> # note that sign is reversed (see documentation)
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneFromAbb = .data$BiddingZoneAbb,
                                                        BiddingZoneFrom = .data$BiddingZone)) |>
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneToAbb = .data$BiddingZoneAbb,
@@ -48,6 +48,6 @@ JAOPuTo_Core_pricespreads <- function(start,
                   .data$BiddingZoneTo,
                   .data$BiddingZoneToAbb,
                   .data$PriceSpread) |>
-  dplyr::filter(.data$BiddingZoneFromAbb %in% c("ALBE", "ALDE", "AT", "BE", "CZ", "DE", "HR", "HU", "FR", "NL", "PL", "RO", "SI", "SK") &
-                .data$BiddingZoneToAbb %in% c("ALBE", "ALDE", "AT", "BE", "CZ", "DE", "HR", "HU", "FR", "NL", "PL", "RO", "SI", "SK"))
+    dplyr::filter(.data$BiddingZoneFromAbb %in% c("ALBE", "ALDE", "AT", "BE", "CZ", "DE", "HR", "HU", "FR", "NL", "PL", "RO", "SI", "SK") &
+                    .data$BiddingZoneToAbb %in% c("ALBE", "ALDE", "AT", "BE", "CZ", "DE", "HR", "HU", "FR", "NL", "PL", "RO", "SI", "SK"))
 }

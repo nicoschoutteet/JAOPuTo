@@ -2,6 +2,7 @@
 #'
 #' @description
 #' Download price spreads between selected bidding zones in Core intraday auction 2.
+#' Note that the sign is inverted: JAO Publication Tool defines a negative price spread on BZ1-BZ2 when price(BZ1) > price(BZ2)
 #'
 #' @param start Start datetime; (POSIXct, Date, or character convertible to POSIXct)
 #' @param end End datetime; (POSIXct, Date, or character convertible to POSIXct)
@@ -35,7 +36,8 @@ JAOPuTo_CoreID_IDA2_pricespreads <- function(start,
                         names_to = "Variable",
                         values_to = "PriceSpread") |>
     dplyr::mutate(BiddingZoneFromAbb = substr(.data$Variable, 8,9),
-                  BiddingZoneToAbb = substr(.data$Variable, 11, 12)) |>
+                  BiddingZoneToAbb = substr(.data$Variable, 11, 12),
+                  PriceSpread = -.data$PriceSpread) |> # note that sign is reversed (see documentation)
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneFromAbb = .data$BiddingZoneAbb,
                                                        BiddingZoneFrom = .data$BiddingZone)) |>
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneToAbb = .data$BiddingZoneAbb,
@@ -45,5 +47,7 @@ JAOPuTo_CoreID_IDA2_pricespreads <- function(start,
                   .data$BiddingZoneFromAbb,
                   .data$BiddingZoneTo,
                   .data$BiddingZoneToAbb,
-                  .data$PriceSpread)
+                  .data$PriceSpread)|>
+    dplyr::filter(.data$BiddingZoneFromAbb %in% c("ALBE", "ALDE", "AT", "BE", "CZ", "DE", "HR", "HU", "FR", "NL", "PL", "RO", "SI", "SK") &
+                    .data$BiddingZoneToAbb %in% c("ALBE", "ALDE", "AT", "BE", "CZ", "DE", "HR", "HU", "FR", "NL", "PL", "RO", "SI", "SK"))
 }

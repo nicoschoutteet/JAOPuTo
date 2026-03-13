@@ -45,5 +45,7 @@ JAOPuTo_Core_pricespreads <- function(start,
                   .data$BiddingZoneFromAbb,
                   .data$BiddingZoneTo,
                   .data$BiddingZoneToAbb,
-                  .data$PriceSpread)
+                  .data$PriceSpread) |>
+  dplyr::filter(.data$BiddingZoneFromAbb %in% c("ALBE", "ALDE", "AT", "BE", "CZ", "DE", "HR", "HU", "FR", "NL", "PL", "RO", "SI", "SK") &
+                .data$BiddingZoneToAbb %in% c("ALBE", "ALDE", "AT", "BE", "CZ", "DE", "HR", "HU", "FR", "NL", "PL", "RO", "SI", "SK"))
 }

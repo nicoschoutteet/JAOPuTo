@@ -27,8 +27,8 @@ JAOPuTo_Core_finalcomputation <- function(start, end,
 
   filter_list <- list(Presolved = presolved)
 
-  if (!is.null(tso)) {
-    filter_list$TSO <- tso
+  if (!is.null(TSO)) {
+    filter_list$Tso <- TSO
   }
 
   filter_json <- jsonlite::toJSON(

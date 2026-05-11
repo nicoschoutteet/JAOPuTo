@@ -16,6 +16,7 @@ A tibble containing the combined data returned by all API requests.
 }
 \description{
 Download price spreads between selected bidding zones in Core intraday auction 3.
+Note that the sign is inverted: JAO Publication Tool defines a negative price spread on BZ1-BZ2 when price(BZ1) > price(BZ2)
 }
 \examples{
 \dontrun{

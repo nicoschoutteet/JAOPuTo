@@ -6,6 +6,7 @@
 #' @param start Start datetime; (POSIXct, Date, or character convertible to POSIXct)
 #' @param end End datetime; (POSIXct, Date, or character convertible to POSIXct)
 #' @param presolved Boolean; filter only presolved CNECs (default = TRUE)
+#' @param TSO string; optional filter for specific TSO (default = NULL)
 #'
 #' @export
 #'
@@ -19,13 +20,22 @@
 #' )
 #' }
 JAOPuTo_Core_finalcomputation <- function(start, end,
-                                          presolved = TRUE) {
+                                          presolved = TRUE,
+                                          TSO = NULL) {
 
   # Filter JSON opbouwen
+
+  filter_list <- list(Presolved = presolved)
+
+  if (!is.null(tso)) {
+    filter_list$TSO <- tso
+  }
+
   filter_json <- jsonlite::toJSON(
-    list(Presolved = presolved),
+    filter_list,
     auto_unbox = TRUE
   )
+
 
   JAOPuTo_get(
     dataset  = "core",

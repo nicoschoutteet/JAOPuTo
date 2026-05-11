@@ -4,7 +4,7 @@
 \alias{JAOPuTo_Core_finalcomputation}
 \title{Core - Final Computation}
 \usage{
-JAOPuTo_Core_finalcomputation(start, end, presolved = TRUE)
+JAOPuTo_Core_finalcomputation(start, end, presolved = TRUE, TSO = NULL)
 }
 \arguments{
 \item{start}{Start datetime; (POSIXct, Date, or character convertible to POSIXct)}
@@ -12,6 +12,8 @@ JAOPuTo_Core_finalcomputation(start, end, presolved = TRUE)
 \item{end}{End datetime; (POSIXct, Date, or character convertible to POSIXct)}
 
 \item{presolved}{Boolean; filter only presolved CNECs (default = TRUE)}
+
+\item{TSO}{string; optional filter for specific TSO (default = NULL)}
 }
 \value{
 A tibble containing the combined data returned by all API requests.

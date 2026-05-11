@@ -23,19 +23,20 @@ JAOPuTo_Core_finalcomputation <- function(start, end,
                                           presolved = TRUE,
                                           TSO = NULL) {
 
-  # Filter JSON opbouwen
 
   filter_list <- list(Presolved = presolved)
 
   if (!is.null(TSO)) {
-    filter_list$Tso <- TSO
+    # IMPORTANT: Tso must be an array, even for a single value
+    filter_list$Tso <- list(TSO)
   }
+
 
   filter_json <- jsonlite::toJSON(
     filter_list,
-    auto_unbox = TRUE
+    auto_unbox = TRUE,
+    null = "null"
   )
-
 
   JAOPuTo_get(
     dataset  = "core",

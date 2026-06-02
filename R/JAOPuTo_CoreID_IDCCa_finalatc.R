@@ -39,10 +39,12 @@ JAOPuTo_CoreID_IDCCa_finalATC <- function(start,
                                                        BiddingZoneFrom = .data$BiddingZone)) |>
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneToAbb = .data$BiddingZoneAbb,
                                                        BiddingZoneTo = .data$BiddingZone)) |>
+    dplyr::mutate(Calculation = "final") |>
     dplyr::select(.data$DateTime,
                   .data$BiddingZoneFrom,
                   .data$BiddingZoneFromAbb,
                   .data$BiddingZoneTo,
                   .data$BiddingZoneToAbb,
+                  .data$Calculation,
                   .data$ATC)
 }

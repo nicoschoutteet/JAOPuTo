@@ -22,7 +22,7 @@ JAOPuTo_CoreID_IDCCa_finalATC <- function(start,
   # access helper function
   JAOPuTo_get(
 
-    dataset = "core",
+    dataset = "coreID",
     endpoint = "api/data/IDCCA_intradayAtc",
     start = start,
     end = end
@@ -30,12 +30,11 @@ JAOPuTo_CoreID_IDCCa_finalATC <- function(start,
     dplyr::mutate(dateTimeUtc = lubridate::ymd_hms(.data$dateTimeUtc, tz = "UTC"),
                   DateTime = lubridate::with_tz(.data$dateTimeUtc, "Europe/Brussels")) |>
     dplyr::select(.data$DateTime,
-                  tidyselect::starts_with("initial"),
-                  tidyselect::starts_with("delta")) |>
+                  tidyselect::starts_with("border")) |>
     tidyr::pivot_longer(cols = -.data$DateTime,
                         names_to = "Variable",
                         values_to = "ATC") |>
-    tidyr::separate(.data$Variable, "_", into = c("Calculation", "BiddingZoneFromAbb", "BiddingZoneToAbb")) |>
+    tidyr::separate(.data$Variable, "_", into = c("Border", "BiddingZoneFromAbb", "BiddingZoneToAbb")) |>
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneFromAbb = .data$BiddingZoneAbb,
                                                        BiddingZoneFrom = .data$BiddingZone)) |>
     dplyr::left_join(CoreBiddingZones |> dplyr::rename(BiddingZoneToAbb = .data$BiddingZoneAbb,
@@ -45,6 +44,5 @@ JAOPuTo_CoreID_IDCCa_finalATC <- function(start,
                   .data$BiddingZoneFromAbb,
                   .data$BiddingZoneTo,
                   .data$BiddingZoneToAbb,
-                  .data$Calculation,
                   .data$ATC)
 }

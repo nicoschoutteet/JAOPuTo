@@ -35,7 +35,7 @@ JAOPuTo_Core_netposition <- function(start,
     tidyr::pivot_longer(cols = -.data$DateTime,
                         names_to = "Variable",
                         values_to = "NetPosition") |>
-    tidyr::separate(.data$Variable, "_", into = c("hub", "BiddingZoneAbb")) |>
+    dplyr::mutate(BiddingZoneAbb = stringr::str_remove(.data$Variable, "hub_")) |>
     dplyr::left_join(CoreBiddingZones) |>
     dplyr::select(.data$DateTime,
                   .data$BiddingZone,

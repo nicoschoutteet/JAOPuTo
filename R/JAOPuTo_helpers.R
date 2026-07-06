@@ -1,12 +1,14 @@
 CoreBiddingZones <- tibble::tibble(
   BiddingZoneAbb = c("ALBE", "ALDE", "AT", "BE", "CZ", "DE", "HR", "HU", "FR", "NL", "PL", "RO", "SI", "SK",
                      "DK1", "ES", "IT", "BG", "AL", "BA", "CH", "GR", "ME", "MK", "PT", "RS", "TR", "UA", "KS",
-                     "UK", "MA"),
+                     "UK", "MA",
+                     "DE_NO2_BigHub", "NL_NO2_BigHub", "NL_NO2_NordNed", "DE_DK2_BigHub", "DE_SE4_Baltic", "PL_SE4_SwePol", "PL_LT_BigHub", "RO_BG_VH", "NL_DK1_COBRA", "DE_DK1_VH"),
   BiddingZone = c("ALEGrO Belgium", "ALEGrO Germany", "Austria", "Belgium", "Czech Republic", "Germany/Luxembourg",
                   "Croatia", "Hungary", "France", "Netherlands", "Poland", "Romania", "Slovenia", "Slovakia",
                   "Denmark 1", "Spain", "Italy", "Bulgaria", "Albania", "Bosnia and Herzegovina", "Switzerland",
                   "Greece", "Montenegro", "North Macedonia", "Portugal", "Serbia", "Turkey", "Ukraine", "Kosovo",
-                  "United Kingdom", "Morocco")
+                  "United Kingdom", "Morocco",
+                  "DE-NO2-BigHub", "NL-NO2-BigHub", "NL-NO2-NordNed", "DE-DK2-BigHub", "DE-SE4-Baltic", "PL-SE4-SwePol", "PL-LT-BigHub", "RO-BG-VH", "NL-DK1-COBRA", "DE-DK1-VH")
 )
 
 read_core_sgm <- function() {

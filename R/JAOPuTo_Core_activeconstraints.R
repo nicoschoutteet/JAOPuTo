@@ -73,6 +73,8 @@ JAOPuTo_Core_activeconstraints <- function(start, end) {
                   "Ftotal_ltn" = .data$ftotalLtn,
                   "Maxz2zPTDF" = .data$maxZ2ZPtdf,
                   tidyr::starts_with("hub_")) |>
-dplyr::rename_with(~ stringr::str_replace(.x, "^hub_", "ptdf_"),
-                   dplyr::starts_with("hub_"))
+  dplyr::rename_with(
+    ~ sub("^hub_", "ptdf_", .x),
+    dplyr::starts_with("hub_")
+  )
 }

@@ -72,19 +72,9 @@ JAOPuTo_Core_activeconstraints <- function(start, end) {
                   "IVA" = .data$iva,
                   "Ftotal_ltn" = .data$ftotalLtn,
                   "Maxz2zPTDF" = .data$maxZ2ZPtdf,
-                  "ptdf_ALBE" = .data$hub_ALBE,
-                  "ptdf_ALDE" = .data$hub_ALDE,
-                  "ptdf_AT" = .data$hub_AT,
-                  "ptdf_BE" = .data$hub_BE,
-                  "ptdf_CZ" = .data$hub_CZ,
-                  "ptdf_DE" = .data$hub_DE,
-                  "ptdf_FR" = .data$hub_FR,
-                  "ptdf_HR" = .data$hub_HR,
-                  "ptdf_HU" = .data$hub_HU,
-                  "ptdf_NL" = .data$hub_NL,
-                  "ptdf_PL" = .data$hub_PL,
-                  "ptdf_RO" = .data$hub_RO,
-                  "ptdf_SI" = .data$hub_SI,
-                  "ptdf_SK" = .data$hub_SK
-    )
+                  tidyr::starts_with("hub_")) |>
+  dplyr::rename_with(
+    ~ sub("^hub_", "ptdf_", .x),
+    dplyr::starts_with("hub_")
+  )
 }
